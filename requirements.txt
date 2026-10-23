@@ -1,0 +1,9 @@
+# Core scientific computing
+numpy
+
+# Roseau Load Flow – electrical network modelling and power flow solver
+# Requires a valid licence key (licence_key.txt) at runtime
+roseau-load-flow
+
+# AltDSS – Python interface for compiling and solving OpenDSS circuits
+altdss
