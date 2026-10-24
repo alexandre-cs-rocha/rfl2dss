@@ -11,9 +11,6 @@ Typical workflow:
     3. Call `generate_dss_files()` to produce all .dss scripts in an output directory.
     4. Optionally compile and solve the circuit with AltDSS.
     
-Last Modified:
-    23/03/2026 10:44 by Alexandre Rocha
-    
 Created by: Alexandre Rocha
 """
 
@@ -265,6 +262,8 @@ class rlf2dss:
 
             if len(powers) == 3 and powers[0] == powers[1] and powers[0] == powers[2]:
                 # --- Balanced load: single multi-phase element ---
+                if powers[0] == 0:
+                    continue
                 phases = [str(Phases[f'{p}'].value) for p in load.phases]
                 phases = '.'.join(phases)
                 kw = powers[0].real
@@ -408,9 +407,13 @@ class rlf2dss:
         """
         file_name = f'CodCondutor_{self.name}'
         list_codcon = [self.base_text]
+        cods = set()
 
         for line in self.en.lines.values():
-            z_abc = line.z_line.magnitude   # Raw impedance matrix (3x3 or 4x4), Ω/km
+            if line.parameters.id in cods:
+                continue
+            cods.add(line.parameters.id)
+            z_abc = line.z_line.magnitude / line.length.magnitude   # Raw impedance matrix (3x3 or 4x4), Ω/km
 
             if self.pos_seq == True:
                 # --- Positive-sequence (scalar) representation ---
@@ -680,7 +683,7 @@ if __name__ == '__main__':
 
     # Resolve paths relative to this script's location
     dir_path = Path(__file__).parent
-    name_feeder = 'MV_Feeder_JUR06'
+    name_feeder = 'MV_Feeder_VPA01'
 
     # Input: RLF JSON network file
     json_file = dir_path / 'input' / 'EDPES' / 'rlf' / f'{name_feeder}.json'
