@@ -81,14 +81,6 @@ altdss.altdss.Commands(f'Compile ({master})')
 altdss.altdss.Solution.Solve()
 ```
 
-### 3. Run the bundled example
-
-```bash
-python rlf2dss.py
-```
-
-This assumes `11_MVFeeder0725.json` and `licence_key.txt` are in the same directory as the script.
-
 ---
 
 ## Technical Notes
